@@ -32,6 +32,8 @@ func init() {
 
 }
 func main() {
+
+	//TODO: need to add routing for ease to understand
 	log.Println("Hello World! This is katha📝")
 
 	// Start file server for serving files
