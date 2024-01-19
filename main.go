@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"text/template"
 )
 
@@ -36,13 +37,15 @@ func main() {
 	// Start file server for serving files
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	// Render the HTML file
-	http.HandleFunc("/", indexHandler)
 
-	go http.HandleFunc("/search", searchHandler)
+	http.HandleFunc("/api/options", optionHandler)
+	http.HandleFunc("/search", searchHandler)
+	http.HandleFunc("/", indexHandler)
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
 
 func indexHandler(w http.ResponseWriter, req *http.Request) {
@@ -60,6 +63,24 @@ func searchHandler(w http.ResponseWriter, req *http.Request) {
 	templ.Execute(w, res)
 }
 
+func optionHandler(w http.ResponseWriter, req *http.Request) {
+	// Extract the key from the URL path
+	key := strings.TrimPrefix(req.URL.Path, "/api/options/")
+	key = strings.ToLower(key) // Optionally convert to lowercase
+
+	// Generate search option based on the key
+	option := generateSearchOption(key)
+
+	// Write the generated option as the response
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(option))
+}
+
 func getOdiaMeaning(key string) string {
 	return mapData[key]
+}
+
+func generateSearchOption(key string) string {
+	log.Println("KEY: ", key)
+	return "hello"
 }
