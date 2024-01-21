@@ -13,7 +13,12 @@ var (
 	// errorLogger = log.New(&logBuf, "ERROR: ", log.Lshortfile)
 )
 
-func InfoLog(log string) *bytes.Buffer {
+func INFO(log string) *bytes.Buffer {
+	infoLogger.Print(log)
+	return &logBuf
+}
+
+func DEBUG(log string) *bytes.Buffer {
 	infoLogger.Print(log)
 	return &logBuf
 }
