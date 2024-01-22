@@ -7,6 +7,8 @@ import (
 	"os"
 	"strings"
 	"text/template"
+
+	"github.com/0x4E43/katha/utils"
 )
 
 var mapData = make(map[string]string)
@@ -31,11 +33,9 @@ func init() {
 	}
 
 }
+
 func main() {
-
-	//TODO: need to add routing for ease to understand
-	log.Println("Hello World! This is katha📝")
-
+	log.Println(utils.InfoLog("Hello World! This is katha📝"))
 	// Start file server for serving files
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	// Render the HTML file
