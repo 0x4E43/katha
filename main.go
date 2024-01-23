@@ -35,7 +35,7 @@ func init() {
 }
 
 func main() {
-	log.Println(utils.InfoLog("Hello World! This is katha📝"))
+	log.Println(utils.INFO("Hello World! This is katha📝"))
 	// Start file server for serving files
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	// Render the HTML file
