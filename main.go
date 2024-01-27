@@ -45,7 +45,7 @@ func main() {
 	http.HandleFunc("/", indexHandler)
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(utils.ERROR(err.Error()))
 	}
 
 }
