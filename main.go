@@ -48,6 +48,8 @@ func main() {
 		log.Panic(utils.ERROR(err.Error()))
 	}
 
+	// TODO: rewrite server with http requests multiplexere
+
 }
 
 func indexHandler(w http.ResponseWriter, req *http.Request) {
