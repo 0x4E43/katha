@@ -9,6 +9,7 @@ import (
 	"text/template"
 
 	"github.com/0x4E43/katha/utils"
+	"github.com/gorilla/mux"
 )
 
 var mapData = make(map[string]string)
@@ -43,14 +44,14 @@ func main() {
 	// Render the HTML file
 
 	// TODO: rewrite server with http requests multiplexere
-	mux := http.NewServeMux() // will be possible to route efficiently wilth server mux
+	router := mux.NewRouter() // mux from gorrila mux package
 
-	mux.HandleFunc("/", indexHandler)
+	router.HandleFunc("/", indexHandler)
 
-	mux.HandleFunc("/api/options", optionHandler)
-	mux.HandleFunc("/search", searchHandler)
+	router.HandleFunc("/api/options/:opt", optionHandler)
+	router.HandleFunc("/search", searchHandler)
 	// http.HandleFunc("/", indexHandler)
-	err := http.ListenAndServe(":8080", mux)
+	err := http.ListenAndServe(":8080", router)
 	if err != nil {
 		log.Panic(utils.ERROR(err.Error()))
 	}
