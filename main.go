@@ -10,15 +10,9 @@ import (
 	"time"
 )
 
-// Struct for odia english json data
-type EnOdStruct struct {
-	EN_key string // key will be the English word
-	OD_val string // value will be the meaning of the English word in Odia lipi
-}
+var mapData = make(map[string]string)
 
-func main() {
-	fmt.Println("Hello World!")
-
+func init() {
 	// Read the given input JSON file and store it in cache
 	// IMPROVEMENT: do not reload the file on each call
 	data, err := os.ReadFile("En-Od-v3.json")
@@ -27,11 +21,14 @@ func main() {
 	}
 
 	// Unmarshal the data to JSON format using EnOdStruct
-	var mapData = make(map[string]string)
 	err = json.Unmarshal(data, &mapData)
 	if err != nil {
 		panic(err)
 	}
+
+}
+func main() {
+	fmt.Println("Hello World!")
 
 	startTime := time.Now().UnixMilli()
 	fmt.Println("Start Time: ", startTime)
@@ -42,7 +39,9 @@ func main() {
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	// Render the HTML file
 	http.HandleFunc("/", indexHandler)
-	err = http.ListenAndServe(":8080", nil)
+
+	go http.HandleFunc("/search", searchHandler)
+	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -52,4 +51,21 @@ func main() {
 func indexHandler(w http.ResponseWriter, req *http.Request) {
 	templ := template.Must(template.ParseFiles("htmx/index.html"))
 	templ.Execute(w, nil)
+}
+
+func searchHandler(w http.ResponseWriter, req *http.Request) {
+	//get the request from the urls
+	searchParam := req.URL.Query().Get("search")
+
+	//find in map dictionary
+
+	fmt.Fprint(w, getOdiaMeaning(searchParam))
+}
+
+func getOdiaMeaning(key string) string {
+	val := mapData[key]
+	if val == "" {
+		val = "No result"
+	}
+	return "<h1>" + val + "</h1>"
 }
