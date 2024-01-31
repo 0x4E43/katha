@@ -1,10 +1,18 @@
 <div>
     <style>
-        .result{
-            color: red;
+        .result {
+            color: #660000;
+            font-size: 3rem;
+        }
+
+        .key {
+            font-weight: bold;
         }
     </style>
     <div id="result">
-        
+        <div class="result">
+            <p>You Searched for - <span class="key">{{ .Key }}</span> <span>: {{ .Val }}</span></p>
+            <p></p>
+        </div>
     </div>
 </div>

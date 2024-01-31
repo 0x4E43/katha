@@ -53,19 +53,22 @@ func indexHandler(w http.ResponseWriter, req *http.Request) {
 	templ.Execute(w, nil)
 }
 
+type ServerResponseV1 struct {
+	Key string
+	Val string
+}
+
 func searchHandler(w http.ResponseWriter, req *http.Request) {
 	//get the request from the urls
 	searchParam := req.URL.Query().Get("search")
-
-	//find in map dictionary
-
-	fmt.Fprint(w, getOdiaMeaning(searchParam))
+	//TODO: eed to do lower case for key
+	//find in map dictionary and render the result
+	res := ServerResponseV1{Key: searchParam, Val: getOdiaMeaning(searchParam)}
+	templ := template.Must(template.ParseFiles("htmx/test.html"))
+	templ.Execute(w, res)
 }
 
 func getOdiaMeaning(key string) string {
-	val := mapData[key]
-	if val == "" {
-		val = "No result"
-	}
-	return "<h1>" + val + "</h1>"
+	return mapData[key]
+
 }
