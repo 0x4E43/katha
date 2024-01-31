@@ -90,6 +90,6 @@ func getOdiaMeaning(key string) string {
 }
 
 func generateSearchOption(key string) string {
-	log.Println(utils.DEBUG("KEY: " + key))
+	log.Print(utils.DEBUG("KEY: " + key))
 	return "hello"
 }
