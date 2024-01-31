@@ -10,10 +10,15 @@ import (
 
 var mapData = make(map[string]string)
 
+type ServerResponseV1 struct {
+	Key string
+	Val string
+}
+
 func init() {
 	// Read the given input JSON file and store it in cache
 	// IMPROVEMENT: do not reload the file on each call
-	data, err := os.ReadFile("En-Od-v3.json")
+	data, err := os.ReadFile("data/En-Od-v3.json")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -43,11 +48,6 @@ func main() {
 func indexHandler(w http.ResponseWriter, req *http.Request) {
 	templ := template.Must(template.ParseFiles("htmx/index.html"))
 	templ.Execute(w, nil)
-}
-
-type ServerResponseV1 struct {
-	Key string
-	Val string
 }
 
 func searchHandler(w http.ResponseWriter, req *http.Request) {
