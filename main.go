@@ -2,12 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"text/template"
-	"time"
 )
 
 var mapData = make(map[string]string)
@@ -17,23 +15,18 @@ func init() {
 	// IMPROVEMENT: do not reload the file on each call
 	data, err := os.ReadFile("En-Od-v3.json")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	// Unmarshal the data to JSON format using EnOdStruct
 	err = json.Unmarshal(data, &mapData)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 }
 func main() {
-	fmt.Println("Hello World!")
-
-	startTime := time.Now().UnixMilli()
-	fmt.Println("Start Time: ", startTime)
-	fmt.Println(mapData["elephant"])
-	fmt.Println("End Time: ", (time.Now().UnixMilli() - startTime))
+	log.Println("Hello World! This is katha📝")
 
 	// Start file server for serving files
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
@@ -43,9 +36,8 @@ func main() {
 	go http.HandleFunc("/search", searchHandler)
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-	log.Println("Server Running at : ", 8080)
 }
 
 func indexHandler(w http.ResponseWriter, req *http.Request) {
@@ -70,5 +62,4 @@ func searchHandler(w http.ResponseWriter, req *http.Request) {
 
 func getOdiaMeaning(key string) string {
 	return mapData[key]
-
 }
