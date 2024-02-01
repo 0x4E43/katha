@@ -43,7 +43,6 @@ func main() {
 	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 	// Render the HTML file
 
-	// TODO: rewrite server with http requests multiplexere
 	router := mux.NewRouter() // mux from gorrila mux package
 
 	router.HandleFunc("/", indexHandler)
