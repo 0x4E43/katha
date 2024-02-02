@@ -37,17 +37,18 @@ func init() {
 
 func main() {
 	log.Println(utils.INFO("Hello World! This is katha📝"))
+	router := mux.NewRouter() // mux from gorrila mux package
 	// Start file server for serving files
+	// Render the HTML file
 	// file handler kept as it is might not work if uses mux, will see later
 	// TODO: handle Image later
-	http.Handle("/images/", http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
-	// Render the HTML file
-
-	router := mux.NewRouter() // mux from gorrila mux package
+	router.PathPrefix("/images/").Handler(http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 
 	router.HandleFunc("/", indexHandler)
 
-	router.HandleFunc("/api/options/:opt", optionHandler)
+	router.HandleFunc("/api/options/:opts", optionHandler)
+	router.HandleFunc("/api/options/", optionHandler)
+
 	router.HandleFunc("/search", searchHandler)
 	// http.HandleFunc("/", indexHandler)
 	err := http.ListenAndServe(":8080", router)
@@ -74,6 +75,9 @@ func searchHandler(w http.ResponseWriter, req *http.Request) {
 
 func optionHandler(w http.ResponseWriter, req *http.Request) {
 	// Extract the key from the URL path
+
+	val := mux.Vars(req)["opts"]
+	log.Println(utils.INFO(val))
 	key := strings.TrimPrefix(req.URL.Path, "/api/options/")
 	key = strings.ToLower(key) // Optionally convert to lowercase
 
