@@ -46,7 +46,7 @@ func main() {
 
 	router.HandleFunc("/", indexHandler)
 
-	router.HandleFunc("/api/options/:opts", optionHandler)
+	router.HandleFunc("/api/options/{opts}", optionHandler)
 	router.HandleFunc("/api/options/", optionHandler)
 
 	router.HandleFunc("/search", searchHandler)
