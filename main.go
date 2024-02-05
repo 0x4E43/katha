@@ -38,11 +38,11 @@ func init() {
 func main() {
 	log.Println(utils.INFO("Hello World! This is katha📝"))
 	router := mux.NewRouter() // mux from gorrila mux package
-	// Start file server for serving files
-	// Render the HTML file
+
 	// If any request coming as prefix /images it will be handled by file server
 	// image will be served from the image directory
 	// any image specified in html file needs to present in image dir
+	// http.FileServer(http.Dir("images") -> Responsible for serving image files
 	router.PathPrefix("/images/").Handler(http.StripPrefix("/images/", http.FileServer(http.Dir("images"))))
 
 	router.HandleFunc("/", indexHandler)
