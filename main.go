@@ -12,7 +12,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var MAX_KEY int64 = 100000000 //MAX num of keys to be handled by this app
+
 var mapData = make(map[string]string)
+
+var keys = make([]string, MAX_KEY)
 
 type ServerResponseV1 struct {
 	Key string
@@ -33,6 +37,17 @@ func init() {
 		log.Fatal(err)
 	}
 
+	// once mapData is loaded get all the keys and store them into the key variabele
+	// at this specific point assuming that mapData is loaded, loding all the keys
+
+	if len(mapData) > 0 {
+		log.Println(utils.DEBUG("As mapdata size is more then 0, loading all the keys into keys"))
+		for k := range mapData {
+			keys = append(keys, k)
+		}
+	}
+
+	log.Println("Keys : ", len(keys))
 }
 
 func main() {
