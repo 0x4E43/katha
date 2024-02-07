@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -13,6 +14,8 @@ import (
 )
 
 var MAX_KEY int64 = 100000000 //MAX num of keys to be handled by this app
+
+var MAX_OPT int8 = 5
 
 var mapData = make(map[string]string)
 
@@ -104,14 +107,28 @@ func optionHandler(w http.ResponseWriter, req *http.Request) {
 
 	// Write the generated option as the response
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(option))
+	w.Write([]byte("hello"))
+
+	fmt.Println("Options: ", option, " Size :", len(option))
 }
 
 func getOdiaMeaning(key string) string {
 	return mapData[key]
 }
 
-func generateSearchOption(key string) string {
+func generateSearchOption(key string) []string {
 	log.Print(utils.DEBUG("KEY: " + key))
-	return "hello"
+	opts := make([]string, MAX_OPT)
+	count := 0
+	for _, v := range keys {
+		if count < int(MAX_OPT) {
+			if strings.Contains(v, key) {
+				opts = append(opts, v)
+				count = count + 1
+			}
+		} else {
+			break
+		}
+	}
+	return opts
 }
