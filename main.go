@@ -23,6 +23,8 @@ type ServerResponseV1 struct {
 	Val string
 }
 
+// TODO: currently it seems like init() is being called 2 times
+// need to check and fix
 func init() {
 	// Read the given input JSON file and store it in cache
 	// IMPROVEMENT: do not reload the file on each call
