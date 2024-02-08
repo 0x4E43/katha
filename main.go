@@ -13,13 +13,9 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var MAX_KEY int64 = 100000000 //MAX num of keys to be handled by this app
-
-var MAX_OPT int8 = 5
-
 var mapData = make(map[string]string)
 
-var keys = make([]string, MAX_KEY)
+var keys = make([]string, 0)
 
 type ServerResponseV1 struct {
 	Key string
@@ -118,10 +114,10 @@ func getOdiaMeaning(key string) string {
 
 func generateSearchOption(key string) []string {
 	log.Print(utils.DEBUG("KEY: " + key))
-	opts := make([]string, MAX_OPT)
+	opts := make([]string, 0)
 	count := 0
 	for _, v := range keys {
-		if count < int(MAX_OPT) {
+		if count < 5 { // max 5 key is needed for auto complete
 			if strings.Contains(v, key) {
 				opts = append(opts, v)
 				count = count + 1
