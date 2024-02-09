@@ -22,6 +22,11 @@ type ServerResponseV1 struct {
 	Val string
 }
 
+type ApiResponse struct {
+	Msg  string      `json:"message"`
+	Data interface{} `json:"data"`
+}
+
 // TODO: currently it seems like init() is being called 2 times
 // need to check and fix
 func init() {
@@ -64,7 +69,6 @@ func main() {
 	router.HandleFunc("/", indexHandler)
 
 	router.HandleFunc("/api/options/{opts}", optionHandler)
-	router.HandleFunc("/api/options/", optionHandler)
 
 	router.HandleFunc("/search", searchHandler)
 	// http.HandleFunc("/", indexHandler)
@@ -94,18 +98,22 @@ func optionHandler(w http.ResponseWriter, req *http.Request) {
 	// Extract the key from the URL path
 
 	val := mux.Vars(req)["opts"]
-	log.Println(utils.INFO(val))
-	key := strings.TrimPrefix(req.URL.Path, "/api/options/")
-	key = strings.ToLower(key) // Optionally convert to lowercase
-
 	// Generate search option based on the key
-	option := generateSearchOption(key)
+	option := generateSearchOption(val)
 
 	// Write the generated option as the response
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("hello"))
 
 	fmt.Println("Options: ", option, " Size :", len(option))
+	res := ApiResponse{
+		Msg:  "Autocomplete data fetched successfully",
+		Data: option,
+	}
+	err := json.NewEncoder(w).Encode(res)
+
+	if err != nil {
+		log.Panic(err)
+	}
 }
 
 func getOdiaMeaning(key string) string {
