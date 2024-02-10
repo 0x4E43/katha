@@ -30,7 +30,8 @@
         margin-top: 20px;
         margin-left: -30px;
     }
-    .logo{
+
+    .logo {
         background-blend-mode: screen;
     }
 </style>
@@ -44,11 +45,10 @@
         <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->
         <div class="mb-3 w-1/4">
             <div class="relative mb-4 flex w-full flex-wrap items-stretch">
-                <input type="search" name="search"
-                    class="relative m-0 block min-w-0 flex-auto 
+                <input type="search" name="search" class="relative m-0 block min-w-0 flex-auto 
                     rounded border border-solid border-slate-700 bg-inherit focus:bg-inherit px-3 py-[0.25rem] 
-                    text-base font-normal leading-[1.6] text-slate-700"
-                    placeholder="Search" aria-label="Search" aria-describedby="button-addon2" />
+                    text-base font-normal leading-[1.6] text-slate-700" placeholder="Search" aria-label="Search"
+                    aria-describedby="button-addon2" />
 
                 <!--Search icon-->
                 <button>
@@ -70,6 +70,7 @@
 
         </div>
     </div>
+
     <body>
         <!-- <form hx-get="/search" hx-target="#test-results">
             <input type="text" name="search" placeholder="Test Input">
@@ -85,6 +86,15 @@
             </div>
         </div>
     </footer> -->
+
+    <!-- Input text field with htmx attributes for autocomplete -->
+    <input type="text" id="autocompleteInput" list="autocompleteOptions" hx-get="/api/options/" hx-vals="_value: value"
+        hx-trigger="input" hx-indicator="#autocompleteOptions">
+
+    <!-- Datalist to display autocomplete suggestions -->
+    <datalist id="autocompleteOptions">
+        <!-- Suggestions will be populated dynamically -->
+    </datalist>
 </body>
 
 
