@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/htmx.org@1.9.10"
         integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
         crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/path-params.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTMX Example</title>
@@ -88,13 +89,47 @@
     </footer> -->
 
     <!-- Input text field with htmx attributes for autocomplete -->
-    <input type="text" id="autocompleteInput" list="autocompleteOptions" hx-get="/api/options/" hx-vals="_value: value"
-        hx-trigger="input" hx-indicator="#autocompleteOptions">
+<!-- Input text field with htmx attributes for autocomplete -->
+<!-- Input text field with htmx attributes for autocomplete -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autocomplete Example with htmx</title>
+    <script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.min.js"></script>
+</head>
+<body>
 
-    <!-- Datalist to display autocomplete suggestions -->
-    <datalist id="autocompleteOptions">
-        <!-- Suggestions will be populated dynamically -->
-    </datalist>
+<!-- Input text field with htmx attributes for autocomplete -->
+<input type="text" id="autocompleteInput" list="autocompleteOptions"  name="opts"
+       hx-get="/api/options" 
+       hx-include="[name='opts']"
+       hx-vals='{"opts": function(){ return document.getElementById("autocompleteInput").value; }}'
+       hx-trigger="input" hx-indicator="#autocompleteOptions"
+       hx-swap="outerHTML">
+
+<!-- Datalist to display autocomplete suggestions -->
+<datalist id="autocompleteOptions" hx-swap="outerHTML">
+    <!-- Suggestions will be populated dynamically -->
+    {{range .data.data}}
+        <option value="{{.}}">{{.}}</option>
+    {{end}}
+</datalist>
+
+</body>
+</html>
+
+
+
+<script>
+// JavaScript function to get the input value
+function getInputValue() {
+    return document.getElementById('autocompleteInput').value;
+}
+</script>
+
+
 </body>
 
 

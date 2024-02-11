@@ -69,6 +69,7 @@ func main() {
 	router.HandleFunc("/", indexHandler)
 
 	router.HandleFunc("/api/options/{opts}", optionHandler)
+	router.HandleFunc("/api/options", optionHandlerParams)
 
 	router.HandleFunc("/search", searchHandler)
 	// http.HandleFunc("/", indexHandler)
@@ -98,6 +99,40 @@ func optionHandler(w http.ResponseWriter, req *http.Request) {
 	// Extract the key from the URL path
 
 	val := mux.Vars(req)["opts"]
+	// Generate search option based on the key
+	option := generateSearchOption(val)
+
+	// Write the generated option as the response
+	w.WriteHeader(http.StatusOK)
+
+	fmt.Println("Options: ", option, " Size :", len(option))
+	res := ApiResponse{
+		Msg:  "Autocomplete data fetched successfully",
+		Data: option,
+	}
+	err := json.NewEncoder(w).Encode(res)
+
+	if err != nil {
+		log.Panic(err)
+	}
+}
+
+func optionHandlerParams(w http.ResponseWriter, req *http.Request) {
+	// Extract the key from the URL path
+
+	val := req.URL.Query().Get("opts")
+	if val == "" {
+		res := ApiResponse{
+			Msg:  "No data found",
+			Data: nil,
+		}
+
+		err := json.NewEncoder(w).Encode(res)
+
+		if err != nil {
+			log.Panic(err)
+		}
+	}
 	// Generate search option based on the key
 	option := generateSearchOption(val)
 
